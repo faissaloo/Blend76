@@ -175,9 +175,14 @@ void main(string[] args) {
     f = std.stdio.File("/var/lib/b76/config.b76");
   }
   auto device = std.stdio.File("/sys/devices/virtual/dmi/id/product_version").readln().chop();
-  if (device != "oryp4") {
-    writeln("Error: This machine is unsupported.");
-    return;
+  switch (device) {
+    case "oryp4":
+    case "oryp2-ess":
+    case "serw11":
+      break;
+    default:
+      writeln("Error: This machine is unsupported.");
+      return;
   }
 
   auto led_count = f.rawRead(new ubyte[1])[0];
