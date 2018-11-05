@@ -4,16 +4,8 @@ import std.conv;
 import std.format;
 import std.string;
 import core.thread;
+import std.algorithm;
 
-double clamp(double val, double min, double max) {
-  if (val<min) {
-    return min;
-  } else if (val > max) {
-    return max;
-  } else {
-    return val;
-  }
-}
 class Led {
   string path;
   ulong length;
@@ -53,7 +45,7 @@ class Led {
   auto getBlendRounded(double pos) {
     auto blend = getBlend(pos);
     // I hate floating point
-    return [clamp(blend[0],0,255),clamp(blend[1],0,255),clamp(blend[2],0,255)].to!(ubyte[]);
+    return [clamp!(double)(blend[0],0.0,255.0),clamp!(double)(blend[1],0.0,255.0),clamp!(double)(blend[2],0.0,255.0)].to!(ubyte[]);
   }
 
   void toString(scope void delegate(const(char)[]) sink) const {
